@@ -58,13 +58,12 @@ function OnLoad()
         Menu.KillSteal:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
         Menu.KillSteal:addParam("useIgnite", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
 
-    Menu:addSubMenu(myHero.charName.." - Misc Settings", "Misc")
+    Menu:addSubMenu(myHero.charName.." - Skin Changer Settings", "Misc")
         Menu.Misc:addParam("SetSkin", "Select Skin", SCRIPT_PARAM_LIST, 6, {"1", "2", "3", "4", "5", "6"})
 
     Menu:addSubMenu(myHero.charName.." - Keys Settings", "Keys")
         OrbwalkManager:LoadCommonKeys(Menu.Keys)
         Menu.Keys:addParam("HarassToggle", "Harass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("K"))
-        Menu.Keys:addParam("CDR", "Farm R with W", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("O"))
         Menu.Keys:addParam("Marathon", "Marathon Mode", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
         Menu.Keys:permaShow("HarassToggle")
         Menu.Keys.HarassToggle = false
@@ -92,11 +91,6 @@ function OnTick()
             W:Cast()
         end
     end
-    if Menu.Keys.CDR then
-        if not R:IsReady() and W:IsReady() then
-            W:Cast()
-        end
-    end
 end
 
 function KillSteal()
@@ -115,7 +109,7 @@ function Combo()
     local target = TS.target
     local q, w, e, r, dmg = GetBestCombo(target)
     if ValidTarget(target) then
-        if Menu.Combo.useE then
+        if Menu.Combo.useE and not Q:IsReady() then
             E:Cast(target)
         end
         if Menu.Combo.useW and not Q:IsReady() then
