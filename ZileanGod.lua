@@ -22,7 +22,7 @@ function OnLoad()
 
     Q = _Spell({Slot = _Q, DamageName = "Q", Range = 900, Width = 210, Delay = 0.3, Speed = 2000, Aoe = true, Collision = false, Type = SPELL_TYPE.CIRCULAR}):AddDraw()
     W = _Spell({Slot = _W, DamageName = "W", Range = 125, Type = SPELL_TYPE.SELF}):AddDraw()
-    E = _Spell({Slot = _E, DamageName = "E", Range = 550, Type = SPELL_TYPE.TARGETTED}):AddDraw()
+    E = _Spell({Slot = _E, DamageName = "E", Range = 745, Type = SPELL_TYPE.TARGETTED}):AddDraw()
     Ignite = _Spell({Slot = FindSummonerSlot("summonerdot"), DamageName = "IGNITE", Range = 600, Type = SPELL_TYPE.TARGETTED})
     R = _Spell({Slot = _R, DamageName = "R", Range = 900, Type = SPELL_TYPE.SELF}):AddDraw()
 
