@@ -24,7 +24,7 @@ function OnLoad()
     W = _Spell({Slot = _W, DamageName = "W", Range = 125, Type = SPELL_TYPE.SELF}):AddDraw()
     E = _Spell({Slot = _E, DamageName = "E", Range = 745, Type = SPELL_TYPE.TARGETTED}):AddDraw()
     Ignite = _Spell({Slot = FindSummonerSlot("summonerdot"), DamageName = "IGNITE", Range = 600, Type = SPELL_TYPE.TARGETTED})
-    R = _Spell({Slot = _R, DamageName = "R", Range = 900, Type = SPELL_TYPE.SELF}):AddDraw()
+    R = _Spell({Slot = _R, DamageName = "R", Range = 900, Type = SPELL_TYPE.TARGETTED}):AddDraw()
 
     Menu:addSubMenu(myHero.charName.." - Target Selector Settings", "TS")
         Menu.TS:addTS(TS)
@@ -128,7 +128,7 @@ end
 
 function Ultimate()
     if Menu.Combo.panicult then
-        if myHero.health < (myHero.maxHealth*(Menu.Combo.hp*0.01)) then
+        if myHero.health/myHero.maxHealth * 100 <= Menu.Combo.hp then
             if R:IsReady() and CountEnemyHeroInRange(1300) >= 1 then
                 CastSpell(_R, myHero)
             end
