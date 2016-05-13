@@ -1,6 +1,6 @@
 local ScriptName = "TimeBomb Zilean"
 local Author = "Artrilo"
-local version = 0.1
+local version = 0.2
 
 if myHero.charName ~= "Zilean" then return end
 
