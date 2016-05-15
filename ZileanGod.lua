@@ -1,3 +1,4 @@
+local AUTOUPDATES = true
 local ScriptName = "TimeBomb Zilean"
 local Author = "Artrilo"
 local version = 0.2
@@ -8,6 +9,21 @@ local Q, W, E, R, Ignite = nil, nil, nil, nil, nil
 local TS, Menu = nil, nil
 local PredictedDamage = {}
 local RefreshTime = 0.4
+
+function CheckUpdate()
+    if AUTOUPDATES then
+        local ToUpdate = {}
+        ToUpdate.LocalVersion = version
+        ToUpdate.VersionPath = "raw.githubusercontent.com/Artrilo/Bot-Of-Legends/master/version/ZileanGod.version"
+        ToUpdate.ScriptPath = "raw.githubusercontent.com/Artrilo/Bot-Of-Legends/master/ZileanGod.lua"
+        ToUpdate.SavePath = SCRIPT_PATH.._ENV.FILE_NAME
+        ToUpdate.CallbackUpdate = function(NewVersion,OldVersion) PrintMessage(ScriptName, "Updated to "..NewVersion..". Please reload with 2x F9.") end
+        ToUpdate.CallbackNoUpdate = function(OldVersion) PrintMessage(ScriptName, "No Updates Found.") end
+        ToUpdate.CallbackNewVersion = function(NewVersion) PrintMessage(ScriptName, "New Version found ("..NewVersion.."). Please wait...") end
+        ToUpdate.CallbackError = function(NewVersion) PrintMessage(ScriptName, "Error while downloading.") end
+        _ScriptUpdate(ToUpdate)
+    end
+end
 
 function OnLoad()
     local r = _Required()
@@ -90,6 +106,9 @@ function OnTick()
         elseif not E:IsReady() and W:IsReady() then
             W:Cast()
         end
+    end
+    if Menu.Combo.panicult then
+        Ultimate()
     end
 end
 
