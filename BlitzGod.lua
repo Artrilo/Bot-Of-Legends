@@ -1,3 +1,4 @@
+local AUTOUPDATES = true
 local ScriptName = "2 Fist 1 Hook"
 local Author = "Artrilo"
 local version = 0.1
