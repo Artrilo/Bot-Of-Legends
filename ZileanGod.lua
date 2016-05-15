@@ -1,7 +1,7 @@
 local AUTOUPDATES = true
 local ScriptName = "TimeBomb Zilean"
 local Author = "Artrilo"
-local version = 0.2
+local version = 0.3
 
 if myHero.charName ~= "Zilean" then return end
 
