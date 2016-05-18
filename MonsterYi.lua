@@ -1,6 +1,6 @@
 local ScriptName = "Monster Yi"
 local Author = "Artrilo"
-local version = 1
+local version = 1.1
 
 if myHero.charName ~= "MasterYi" then return end
 
@@ -132,14 +132,6 @@ function Combo()
         if Menu.Combo.R.useR and GetDistance(target) > 800 then
             R:Cast()
         end 
-    end
-end
-
-function CastE()
-    for i, ally in ipairs(GetAllyHeroes()) do
-        if ally ~= nil and GetDistance(ally) < 800 and not ally.dead and ally.visible and E:IsReady() and Menu.Combo.E.useE then
-            CastSpell(_E, ally)          
-        end
     end
 end
 
