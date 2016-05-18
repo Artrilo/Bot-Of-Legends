@@ -140,7 +140,7 @@ function Harass()
     if myHero.mana / myHero.maxMana * 100 >= Menu.Harass.Mana then
         if ValidTarget(target) then
             if Menu.Harass.useE then
-                CastE()
+                E:Cast()
             end
             if Menu.Harass.useQ then
                 Q:Cast(target)
