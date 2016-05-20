@@ -3,6 +3,8 @@ local Version = 0.2
 local Champions = {
     ["MasterYi"] = function() return __MasterYi() end,
     ["Kennen"] = function() return __Kennen() end,
+    ["Graves"] = function() return __Graves() end,
+    ["Brand"]  = function() return __Brand() end,
 }
 if not Champions[myHero.charName] then return end
 local Ignite    = nil
@@ -170,10 +172,119 @@ AddLoadCallback(
                 champion.Menu.Keys:permaShow("HarassToggle")
                 champion.Menu.Keys.HarassToggle = false
             champion.MenuLoaded = true
+
+            elseif myHero.charName == "Graves" then
+            champion.TS = _SimpleTargetSelector(TARGET_LESS_CAST_PRIORITY, 1200, DAMAGE_PHYSICAL)
+            champion.Q = _Spell({Slot = _Q, Range = 800, Width = 40, Delay = 0.25, Speed = 3000, Collision = false, Aoe = true, Type = SPELL_TYPE.LINEAR}):AddDraw()
+            champion.W = _Spell({Slot = _W, Range = 900, Width = 225, Delay = 0.25, Speed = 1650, Collision = false, Aoe = true, Type = SPELL_TYPE.CIRCULAR}):AddDraw()
+            champion.E = _Spell({Slot = _E, Range = 425}):AddDraw()
+            champion.R = _Spell({Slot = _R, Range = 1150, Width = 100, Delay = 0.75, Speed = 1400, Collision = false, Aoe = true, Type = SPELL_TYPE.LINEAR}):AddDraw()
+        
+            champion.TS:AddToMenu(champion.Menu)
+        
+            champion.Menu:addSubMenu(myHero.charName.." - General Settings", "General")
+                champion.Menu.General:addParam("Overkill", "Overkill % for Dmg Predict..", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Combo Settings", "Combo")
+                champion.Menu.Combo:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseE", "Use E (Mouse Pos)", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Combo:addParam("Items", "Use Items in Combo", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Harass Settings", "Harass")
+                champion.Menu.Harass:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Harass:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - LaneClear Settings", "LaneClear")
+                champion.Menu.LaneClear:addParam("UseQ", "Use Q",  SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("Q", "Use Q If Hit >= ", SCRIPT_PARAM_SLICE, 4, 0, 10)
+                champion.Menu.LaneClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - JungleClear Settings", "JungleClear")
+                champion.Menu.JungleClear:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                      
+            champion.Menu:addSubMenu(myHero.charName.." - KillSteal Settings", "KillSteal")
+                champion.Menu.KillSteal:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseR", "Use R", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseIgnite", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Auto Settings", "Auto")          
+                champion.Menu.Auto:addSubMenu("Use E To Evade", "UseE")
+                    _Evader(champion.Menu.Auto.UseE):CheckCC():AddCallback(function(target) champion:EvadeE(target)end)
+
+            champion.Menu:addSubMenu(myHero.charName.." - Misc Settings", "Misc")
+                champion.Menu.Misc:addParam("SetSkin", "Select Skin", SCRIPT_PARAM_LIST, 10, {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Keys Settings", "Keys")
+                OrbwalkManager:LoadCommonKeys(champion.Menu.Keys)
+                champion.Menu.Keys:addParam("HarassToggle", "Harass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+                champion.Menu.Keys:permaShow("HarassToggle")
+                champion.Menu.Keys.HarassToggle = false
+            champion.MenuLoaded = true
+            elseif myHero.charName == "Brand" then
+            champion.TS = _SimpleTargetSelector(TARGET_LESS_CAST_PRIORITY, 1050, DAMAGE_MAGIC)
+            champion.Q = _Spell({Slot = _Q, Range = 1050, Width = 60, Delay = 0.25, Speed = 1600, Aoe = false, Collision = true, Type = SPELL_TYPE.LINEAR}):AddDraw()
+            champion.W = _Spell({Slot = _W, Range = 900, Width = 240, Delay = 0.85, Speed = math.huge, Collision = false, Aoe = true, Type = SPELL_TYPE.CIRCULAR}):AddDraw()
+            champion.E = _Spell({Slot = _E, Range = 625, Type = SPELL_TYPE.TARGETTED}):AddDraw()
+            champion.R = _Spell({Slot = _R, Range = 750, Type = SPELL_TYPE.TARGETTED}):AddDraw()
+        
+            champion.TS:AddToMenu(champion.Menu)
+        
+            champion.Menu:addSubMenu(myHero.charName.." - General Settings", "General")
+                champion.Menu.General:addParam("Overkill", "Overkill % for Dmg Predict..", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Combo Settings", "Combo")
+                champion.Menu.Combo:addParam("UseQ", "Use Smart Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Combo:addParam("useR2", "Use R If Enemies >=", SCRIPT_PARAM_SLICE, math.min(#GetEnemyHeroes(), 3), 0, 5, 0)
+                champion.Menu.Combo:addParam("Zhonyas","Use Zhonyas if % hp <= ", SCRIPT_PARAM_SLICE, 15, 0, 100)
+                champion.Menu.Combo:addParam("Items", "Use Items in Combo", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Harass Settings", "Harass")
+                champion.Menu.Harass:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Harass:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Harass:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - LaneClear Settings", "LaneClear")
+                champion.Menu.LaneClear:addParam("UseQ", "Use Q",  SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.LaneClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("W", "Use W If Hit >= ", SCRIPT_PARAM_SLICE, 4, 0, 10)
+                champion.Menu.LaneClear:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - JungleClear Settings", "JungleClear")
+                champion.Menu.JungleClear:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                      
+            champion.Menu:addSubMenu(myHero.charName.." - KillSteal Settings", "KillSteal")
+                champion.Menu.KillSteal:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseR", "Use R", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseIgnite", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+
+            champion.Menu:addSubMenu(myHero.charName.." - Misc Settings", "Misc")
+                champion.Menu.Misc:addParam("SetSkin", "Select Skin", SCRIPT_PARAM_LIST, 10, {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Keys Settings", "Keys")
+                OrbwalkManager:LoadCommonKeys(champion.Menu.Keys)
+                champion.Menu.Keys:addParam("HarassToggle", "Harass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+                champion.Menu.Keys:permaShow("HarassToggle")
+                champion.Menu.Keys.HarassToggle = false
+            champion.MenuLoaded = true
         end
         local ChampionCallbacks = {
             ["MasterYi"] = { ["OnTick"] = true, },
             ["Kennen"]   = { ["OnTick"] = true, ["OnProcessSpell"] = true, ["OnApplyBuff"] = true, ["OnRemoveBuff"] = true, },
+            ["Graves"]   = { ["OnTick"] = true, },
+            ["Brand"]    = { ["OnTick"] = true, },
         }
         if ChampionCallbacks[myHero.charName]["OnTick"] then AddTickCallback(function() champion:OnTick() end) end
         if ChampionCallbacks[myHero.charName]["OnProcessSpell"] then
@@ -347,6 +458,7 @@ end
 
 function __MasterYi:Combo()
     local target = self.TS.target
+    if OrbwalkManager.GotReset and OrbwalkManager:InRange(target) then return end
     if IsValidTarget(target) then
         if self.Menu.Combo.Items then UseItems(target) end
         if self.Menu.Combo.UseQ then
@@ -392,6 +504,9 @@ function  __MasterYi:Clear()
     end
 end
 
+function __MasterYi:GetOverkill()
+    return (100 + self.Menu.General.Overkill)/100
+end
 
 function __MasterYi:EvadeQ(target)
     if self.Q:IsReady() and IsValidTarget(target) then
@@ -692,6 +807,209 @@ end
 function __Kennen:GetOverkill()
     return (100 + self.Menu.General.Overkill)/100
 end
+
+class "__Graves"
+function __Graves:__init()
+    self.ScriptName = "Dead Man Walking"
+    self.Author = "Artrilo"
+    self.MenuLoaded = false
+    self.Menu = nil
+    self.TS = nil
+end
+
+function __Graves:OnTick()
+    if self.Menu == nil or self.TS == nil or not self.MenuLoaded then return end
+    self.TS:update()
+    self:KillSteal()
+    SetSkin(myHero, self.Menu.Misc.SetSkin)
+    if OrbwalkManager:IsCombo() then
+        self:Combo()
+    elseif OrbwalkManager:IsHarass() then
+        self:Harass()
+    elseif OrbwalkManager:IsClear() then
+        self:Clear()
+    end
+    if self.Menu.Keys.HarassToggle then self:Harass() end
+end
+
+function __Graves:KillSteal()
+    for idx, enemy in ipairs(GetEnemyHeroes()) do
+        if IsValidTarget(enemy, 1800) and enemy.health > 0 and PercentageHealth(enemy) <= 30 then
+            if self.Menu.KillSteal.UseQ and self.Q:Damage(enemy) >= enemy.health then self.Q:Cast(enemy) end
+            if self.Menu.KillSteal.UseW and self.W:Damage(enemy) >= enemy.health then self.W:Cast(enemy) end
+            if self.Menu.KillSteal.UseR and self.R:Damage(enemy) >= enemy.health then self.R:Cast(enemy) end
+            if self.Menu.KillSteal.UseIgnite and Ignite:IsReady() and Ignite:Damage(enemy) >= enemy.health then Ignite:Cast(enemy) end
+        end
+    end
+end
+
+function __Graves:Combo()
+    local target = self.TS.target
+    if OrbwalkManager.GotReset and OrbwalkManager:InRange(target) then return end
+    if IsValidTarget(target) then
+        if self.Menu.Combo.Items then UseItems(target) end
+        if self.Menu.Combo.UseQ then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Combo.UseW then
+            self.W:Cast(target)
+        end
+        if self.Menu.Combo.UseE and GetDistance(target) < 700 then
+            CastSpell(_E, mousePos.x, mousePos.z)
+        end     
+    end
+end
+
+function  __Graves:Harass()
+    if PercentageMana() >= self.Menu.Harass.Mana then
+        local target = self.TS.target
+        if ValidTarget(target) then
+            if self.Menu.Harass.UseQ then
+                self.Q:Cast(target)
+            end
+            if self.Menu.Harass.UseW then
+                self.W:Cast(target)
+            end
+        end
+    end
+end
+
+function  __Graves:Clear()
+    if PercentageMana() >= self.Menu.LaneClear.Mana then
+        if self.Menu.LaneClear.UseQ then
+            self.Q:LaneClear({NumberOfHits = self.Menu.LaneClear.Q})
+        end
+         if self.Menu.LaneClear.UseW then
+            self.W:LaneClear()
+        end
+    end
+    if self.Menu.JungleClear.UseQ then
+        self.Q:JungleClear()
+    end
+    if self.Menu.JungleClear.UseW then
+        self.W:JungleClear()
+    end
+end
+
+
+function __Graves:EvadeE(target)
+    if self.E:IsReady() and IsValidTarget(target) then
+        local Position = Vector(myHero) + Vector(Vector(target) - Vector(myHero)):normalized():perpendicular() * self.E.Range
+        local Position2 = Vector(myHero) + Vector(Vector(target) - Vector(myHero)):normalized():perpendicular2() * self.E.Range
+        if not Collides(Position) then
+            self.E:CastToVector(Position)
+        elseif not Collides(Position2) then
+            self.E:CastToVector(Position2)
+        else
+            self.E:CastToVector(Position)
+        end
+    end
+end
+
+class "__Brand"
+function __Brand:__init()
+    self.ScriptName = "Last FireBender"
+    self.Author = "Artrilo"
+    self.MenuLoaded = false
+    self.Menu = nil
+    self.TS = nil
+end
+
+function __Brand:OnTick()
+    if self.Menu == nil or self.TS == nil or not self.MenuLoaded then return end
+    self.TS:update()
+    self:KillSteal()
+    SetSkin(myHero, self.Menu.Misc.SetSkin)
+    if OrbwalkManager:IsCombo() then
+        self:Combo()
+    elseif OrbwalkManager:IsHarass() then
+        self:Harass()
+    elseif OrbwalkManager:IsClear() then
+        self:Clear()
+    end
+    if self.Menu.Keys.HarassToggle then self:Harass() end
+end
+
+function __Brand:KillSteal()
+    for idx, enemy in ipairs(GetEnemyHeroes()) do
+        if IsValidTarget(enemy, 1800) and enemy.health > 0 and PercentageHealth(enemy) <= 30 then
+            if self.Menu.KillSteal.UseQ and self.Q:Damage(enemy) >= enemy.health then self.Q:Cast(enemy) end
+            if self.Menu.KillSteal.UseW and self.W:Damage(enemy) >= enemy.health then self.W:Cast(enemy) end
+            if self.Menu.KillSteal.UseE and self.E:Damage(enemy) >= enemy.health then self.E:Cast(enemy) end
+            if self.Menu.KillSteal.UseR and self.R:Damage(enemy) >= enemy.health then self.R:Cast(enemy) end
+            if self.Menu.KillSteal.UseIgnite and Ignite:IsReady() and Ignite:Damage(enemy) >= enemy.health then Ignite:Cast(enemy) end
+        end
+    end
+end
+
+function __Brand:Combo()
+    local target = self.TS.target
+    if IsValidTarget(target) then
+        if self.Menu.Combo.Zhonyas > 0 and PercentageHealth() <= self.Menu.Combo.Zhonyas and DefensiveItems.Zhonyas:IsReady() then
+            DefensiveItems.Zhonyas:Cast()
+        end
+        if self.Menu.Combo.Items then UseItems(target) end
+        if self.Menu.Combo.UseQ and TargetHaveBuff("brandablaze", self.TS.target) then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Combo.UseW then
+            self.W:Cast(target)
+        end
+        if self.Menu.Combo.UseE then
+            self.E:Cast(target)
+        end
+        if self.Menu.Combo.useR2 > 0 then
+            if self.R:IsReady() then
+                local xTargets = #ObjectsInArea(GetEnemyHeroes(), self.R.Range)
+                if xTargets > 2 then
+                    self.R:Cast(target)
+                end
+            end
+        end     
+    end
+end
+
+function  __Brand:Harass()
+    if PercentageMana() >= self.Menu.Harass.Mana then
+        local target = self.TS.target
+        if ValidTarget(target) then
+            if self.Menu.Harass.UseQ and TargetHaveBuff("brandablaze", self.TS.target) then
+                self.Q:Cast(target)
+            end
+            if self.Menu.Harass.UseW then
+                self.W:Cast(target)
+            end
+            if self.Menu.Harass.UseE then
+                self.E:Cast(target)
+            end
+        end
+    end
+end
+
+function  __Brand:Clear()
+    if PercentageMana() >= self.Menu.LaneClear.Mana then
+        if self.Menu.LaneClear.UseQ then
+            self.Q:LaneClear()
+        end
+         if self.Menu.LaneClear.UseW then
+            self.W:LaneClear({NumberOfHits = self.Menu.LaneClear.W})
+        end
+        if self.Menu.LaneClear.UseE and not self.W:IsReady() then
+            self.E:LaneClear()
+        end
+    end
+    if self.Menu.JungleClear.UseQ then
+        self.Q:JungleClear()
+    end
+    if self.Menu.JungleClear.UseW then
+        self.W:JungleClear()
+    end
+    if self.Menu.JungleClear.UseE then
+        self.E:JungleClear()
+    end
+end
+
+
 
 function RequireSimpleLib()
     if FileExist(LIB_PATH.."SimpleLib.lua") and not FileExist(SCRIPT_PATH.."SimpleLib.lua") then
