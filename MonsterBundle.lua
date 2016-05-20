@@ -1,5 +1,5 @@
 local ScriptName = "Monster Bundle"
-local Version = 0.2
+local Version = 0.3
 local Champions = {
     ["MasterYi"] = function() return __MasterYi() end,
     ["Kennen"] = function() return __Kennen() end,
