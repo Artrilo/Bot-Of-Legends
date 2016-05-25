@@ -1,7 +1,7 @@
 local AUTOUPDATES = true
 local ScriptName = "Drains For Brains"
 local Author = "Artrilo"
-local version = 0.2
+local version = 0.3
 
 if myHero.charName ~= "FiddleSticks" then return end
 
@@ -111,8 +111,11 @@ function OnTick()
     KillSteal()
     SetSkin(myHero, Menu.Misc.SetSkin)
     if OrbwalkManager:IsCombo() then
+        E.Range = 500
         Combo()
-    elseif OrbwalkManager:IsHarass() then
+    elseif not OrbwalkManager:IsCombo() then E.Range = 625 end
+        
+    if OrbwalkManager:IsHarass() then
         Harass()
     elseif OrbwalkManager:IsClear() then
         Clear()
