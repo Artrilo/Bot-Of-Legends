@@ -1,6 +1,6 @@
 local AUTOUPDATES = true
 local ScriptName = "MonsterBundle"
-local version = 0.5
+local version = 0.6
 local Champions = {
     ["MasterYi"] = function() return __MasterYi() end,
     ["Kennen"]   = function() return __Kennen() end,
@@ -9,6 +9,7 @@ local Champions = {
     ["DrMundo"]  = function() return __DrMundo() end,
     ["Malphite"] = function() return __Malphite() end,
     ["Kassadin"] = function() return __Kassadin() end,
+    ["Maokai"]   = function() return __Maokai() end,
 }
 if not Champions[myHero.charName] then return end
 local Ignite    = nil
@@ -471,6 +472,68 @@ AddLoadCallback(
                 champion.Menu.Keys:permaShow("HarassToggle")
                 champion.Menu.Keys.HarassToggle = false
             champion.MenuLoaded = true
+            elseif myHero.charName == "Maokai" then
+            if TargetHaveBuff("MaokaiDrain3", myHero) then VengefulMaelstrom = true else VengefulMaelstrom = false end
+           
+            champion.TS = _SimpleTargetSelector(TARGET_LESS_CAST_PRIORITY, 850, DAMAGE_MAGIC)
+            champion.Q = _Spell({Slot = _Q, Range = 570, Width = 110, Delay = 0.25, Speed = 1200, Collision = false, Type = SPELL_TYPE.LINEAR}):AddDraw()
+            champion.W = _Spell({Slot = _W, Range = 525, Delay = 0.25, Speed = 1650, Type = SPELL_TYPE.TARGETTED}):AddDraw()
+            champion.E = _Spell({Slot = _E, Range = 1050, Width = 250, Delay = 0.25, Speed = 1450, Aoe = false, Type = SPELL_TYPE.LINEAR}):AddDraw()
+            champion.R = _Spell({Slot = _R, Range = 475, Delay = 0.25}):AddDraw()
+
+            champion.TS:AddToMenu(champion.Menu)
+
+            champion.Menu:addSubMenu(myHero.charName.." - General Settings", "General")
+                champion.Menu.General:addParam("Overkill", "Overkill % for Dmg Predict..", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Combo Settings", "Combo")
+                champion.Menu.Combo:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("R", "Use R", SCRIPT_PARAM_LIST, 1, { "No", ">1 targets", ">2 targets", ">3 targets", ">4 targets" })
+                champion.Menu.Combo:addParam("Ignite", "Use Ignite If Killable ", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Combo:addParam("Zhonyas", "Use Zhonyas if HP % <=", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Harass Settings", "Harass")
+                champion.Menu.Harass:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Harass:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - LaneClear Settings", "LaneClear")
+                champion.Menu.LaneClear:addParam("Q1", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("W1", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("E1", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - JungleClear Settings", "JungleClear")
+                champion.Menu.JungleClear:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - KillSteal Settings", "KillSteal")
+                champion.Menu.KillSteal:addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+                                                    champion.Menu.KillSteal:addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("Ignite", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Auto Settings", "Auto")
+                champion.Menu.Auto:addSubMenu("Use Q To Interrupt", "Q")
+                    _Interrupter(champion.Menu.Auto.Q):CheckChannelingSpells():CheckGapcloserSpells():AddCallback(function(target) champion.Q:Cast(target) end)
+                champion.Menu.Auto:addSubMenu("Use W To Interrupt", "W")
+                    _Interrupter(champion.Menu.Auto.W):CheckChannelingSpells():CheckGapcloserSpells():AddCallback(function(target) champion.W:Cast(target) end)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Draw Settings", "Draw")
+                champion.Menu.Draw:addParam("Damage", "Damage Calculation Bar", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Keys Settings", "Keys")
+                OrbwalkManager:LoadCommonKeys(champion.Menu.Keys)
+                champion.Menu.Keys:addParam("HarassToggle", "Harass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("k"))
+            
+                champion.Menu.Keys:permaShow("HarassToggle")
+                champion.Menu.Keys.HarassToggle = false
+            champion.MenuLoaded = true
         end
         local ChampionCallbacks = {
             ["MasterYi"] = { ["OnTick"] = true, },
@@ -480,6 +543,7 @@ AddLoadCallback(
             ["DrMundo"]  = { ["OnTick"] = true, ["OnApplyBuff"] = true, ["OnRemoveBuff"] = true, },
             ["Malphite"] = { ["OnTick"] = true, },
             ["Kassadin"] = { ["OnTick"] = true, },
+            ["Maokai"]   = { ["OnTick"] = true, },
         }
         if ChampionCallbacks[myHero.charName]["OnTick"] then AddTickCallback(function() champion:OnTick() end) end
         if ChampionCallbacks[myHero.charName]["OnProcessSpell"] then
@@ -662,7 +726,7 @@ function __MasterYi:Combo()
         if self.Menu.Combo.UseE then
             self.E:Cast()
         end
-        if self.Menu.Combo.UseR and GetDistance(target) > 800 then
+        if self.Menu.Combo.UseR and GetDistance(target) < 800 then
             self.R:Cast()
         end     
     end
@@ -1472,7 +1536,7 @@ end
 
 class "__Kassadin"
 function __Kassadin:__init()
-    self.ScriptName = "Luke Riftwalker"
+    self.ScriptName = "Monsterdin"
     self.Author = "Artrilo"
     self.MenuLoaded = false
     self.Menu = nil
@@ -1625,6 +1689,154 @@ end
 function __Kassadin:GetOverkill()
     return (100 + self.Menu.General.Overkill)/100
 end
+
+class "__Maokai"
+function __Maokai:__init()
+    self.ScriptName = "Mighty Tree"
+    self.Author = "Da Vinci"
+    self.MenuLoaded = false
+    self.Menu = nil
+    self.TS = nil
+end
+
+function __Maokai:OnTick()
+    if self.Menu == nil or self.TS == nil or not self.MenuLoaded then return end
+    self.TS:update()
+    self:KillSteal()
+    if OrbwalkManager:IsCombo() then
+        self:Combo()
+    elseif OrbwalkManager:IsHarass() then
+        self:Harass()
+    elseif OrbwalkManager:IsClear() then
+        self:Clear()
+    elseif OrbwalkManager:IsLastHit() then
+    end
+    if self.Menu.Keys.HarassToggle then self:Harass() end
+end
+
+
+function __Maokai:KillSteal()
+    for idx, enemy in ipairs(GetEnemyHeroes()) do
+        if IsValidTarget(enemy, self.TS.range) and enemy.health > 0 and PercentageHealth(enemy) <= 40 then
+            local q, w, e, r, dmg = GetBestCombo(enemy, self)
+            if dmg >= enemy.health then
+                if self.Menu.KillSteal.Q and ( q or self.Q:Damage(enemy) > enemy.health ) then self.Q:Cast(enemy) end
+                if self.Menu.KillSteal.W and ( w or self.W:Damage(enemy) > enemy.health ) then self.W:Cast(enemy) end
+                if self.Menu.KillSteal.E and ( e or self.E:Damage(enemy) > enemy.health ) then self.E:Cast(enemy) end
+                                if self.Menu.KillSteal.R and ( r or self.R:Damage(enemy) > enemy.health ) then self.R:Cast(enemy) end
+            end
+            if self.Menu.KillSteal.Ignite and Ignite:IsReady() and Ignite:Damage(enemy) > enemy.health then Ignite:Cast(enemy) end
+        end
+    end
+end
+
+function __Maokai:CastR(target)
+    if self.Menu.Combo.R == 1 or VengefulMaelstrom then return end
+    
+    if self.Menu.Combo.R >= 2 and CountEnemyHeroInRange(475, myHero) >= 1 then
+        self.R:Cast(enemy)
+        end 
+end
+
+function __Maokai:Combo()
+    local target = self.TS.target
+    if IsValidTarget(target) then
+        local q, w, e, r, dmg = GetBestCombo(target, self)
+        if Ignite:IsReady() then
+            if self.Menu.Combo.Ignite then
+                if dmg / self:GetOverkill() >= target.health then
+                    Ignite:Cast(target)
+                end
+            end
+        end
+        if self.Menu.Combo.Zhonyas > 0 and PercentageHealth() <= self.Menu.Combo.Zhonyas and DefensiveItems.Zhonyas:IsReady() then
+            DefensiveItems.Zhonyas:Cast()
+        end
+        if self.Menu.Combo.W then
+            self.W:Cast(target)
+        end
+        if self.Menu.Combo.Q then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Combo.E then
+            self.E:Cast(target)
+        end
+        self:CastR(target)
+    end
+end
+
+function __Maokai:Harass()
+    local target = self.TS.target
+    if PercentageMana() >= self.Menu.Harass.Mana then
+        if IsValidTarget(target) then
+            if self.Menu.Harass.E then
+                self.E:Cast(target)
+            end
+            if self.Menu.Harass.Q then
+                self.Q:Cast(target)
+            end
+            if self.Menu.Harass.W then
+                self.W:Cast(target)
+            end
+        end
+    end
+end
+
+function __Maokai:Clear()
+    if PercentageMana() >= self.Menu.LaneClear.Mana then
+        if self.Menu.LaneClear.Q1 then
+            self.Q:LaneClear()
+        end
+        if self.Menu.LaneClear.E1 then
+            self.E:LaneClear()
+        end
+        if self.Menu.LaneClear.W1 then
+            self.W:LaneClear()
+        end
+    end
+
+    if self.Menu.JungleClear.E then
+        self.E:JungleClear()
+    end
+    if self.Menu.JungleClear.W then
+        self.W:JungleClear()
+    end
+    if self.Menu.JungleClear.Q then
+        self.Q:JungleClear()
+    end
+end
+
+function __Maokai:GetComboDamage(target, q, w, e, r)
+    local comboDamage = 0
+    local currentManaWasted = 0
+    if IsValidTarget(target) then
+        if q then
+            comboDamage = comboDamage + self.Q:Damage(target)
+            currentManaWasted = currentManaWasted + self.Q:Mana()
+        end
+        if w then
+            comboDamage = comboDamage + self.W:Damage(target)
+            currentManaWasted = currentManaWasted + self.W:Mana()
+        end
+        if e then
+            comboDamage = comboDamage + self.E:Damage(target)
+            currentManaWasted = currentManaWasted + self.E:Mana()
+        end
+        if r then
+            comboDamage = comboDamage + self.R:Damage(target)
+            currentManaWasted = currentManaWasted + self.R:Mana()
+        end
+        if Ignite:IsReady() then comboDamage = comboDamage + Ignite:Damage(target) end
+        comboDamage = comboDamage + getDmg("AD", target, myHero) * 2
+    end
+    comboDamage = comboDamage * self:GetOverkill()
+    return comboDamage, currentManaWasted
+end
+
+function __Maokai:GetOverkill()
+    return (100 + self.Menu.General.Overkill)/100
+end
+
 
 function RequireSimpleLib()
     if FileExist(LIB_PATH.."SimpleLib.lua") and not FileExist(SCRIPT_PATH.."SimpleLib.lua") then
