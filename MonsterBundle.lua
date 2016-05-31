@@ -1472,7 +1472,7 @@ end
 
 class "__Kassadin"
 function __Kassadin:__init()
-    self.ScriptName = "Monsterdin"
+    self.ScriptName = "Luke Riftwalker"
     self.Author = "Artrilo"
     self.MenuLoaded = false
     self.Menu = nil
