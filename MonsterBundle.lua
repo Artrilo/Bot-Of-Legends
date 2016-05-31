@@ -1189,7 +1189,7 @@ function  __Brand:Clear()
          if self.Menu.LaneClear.UseW then
             self.W:LaneClear({NumberOfHits = self.Menu.LaneClear.W})
         end
-        if self.Menu.LaneClear.UseE and not self.W:IsReady() then
+        if self.Menu.LaneClear.UseE and TargetHaveBuff("brandablaze", minion) then
             self.E:LaneClear()
         end
     end
