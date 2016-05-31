@@ -1,17 +1,16 @@
-local ScriptName = "Monster Bundle"
-local Version = 0.4
+local AUTOUPDATES = true
+local ScriptName = "MonsterBundle"
+local version = 0.5
 local Champions = {
     ["MasterYi"] = function() return __MasterYi() end,
-    ["Kennen"] = function() return __Kennen() end,
-    ["Graves"] = function() return __Graves() end,
-    ["Brand"]  = function() return __Brand() end,
+    ["Kennen"]   = function() return __Kennen() end,
+    ["Graves"]   = function() return __Graves() end,
+    ["Brand"]    = function() return __Brand() end,
+    ["DrMundo"]  = function() return __DrMundo() end,
+    ["Malphite"] = function() return __Malphite() end,
+    ["Kassadin"] = function() return __Kassadin() end,
 }
 if not Champions[myHero.charName] then return end
---Tracker--
-assert(load(Base64Decode("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"), nil, "bt", _ENV))()
-TrackerLoad("xZpSf4FWP8l56zCE")
---Tracker--
-
 local Ignite    = nil
 local Flash     = nil
 local OffensiveItems = nil
@@ -24,6 +23,26 @@ local Colors = {
     White   =  ARGB(255, 255, 255, 255),
     Blue    =  ARGB(255, 0, 0, 255),
 }
+
+--Tracker--
+assert(load(Base64Decode("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"), nil, "bt", _ENV))()
+TrackerLoad("xZpSf4FWP8l56zCE")
+--Tracker--
+
+function CheckUpdate()
+    if AUTOUPDATES then
+        local ToUpdate = {}
+        ToUpdate.LocalVersion = version
+        ToUpdate.VersionPath = "raw.githubusercontent.com/Artrilo/Bot-Of-Legends/master/version/MonsterBundle.version"
+        ToUpdate.ScriptPath = "raw.githubusercontent.com/Artrilo/Bot-Of-Legends/master/MonsterBundle.lua"
+        ToUpdate.SavePath = SCRIPT_PATH.._ENV.FILE_NAME
+        ToUpdate.CallbackUpdate = function(NewVersion,OldVersion) PrintMessage(ScriptName, "Updated to "..NewVersion..". Please reload with 2x F9.") end
+        ToUpdate.CallbackNoUpdate = function(OldVersion) PrintMessage(ScriptName, "No Updates Found.") end
+        ToUpdate.CallbackNewVersion = function(NewVersion) PrintMessage(ScriptName, "New Version found ("..NewVersion.."). Please wait...") end
+        ToUpdate.CallbackError = function(NewVersion) PrintMessage(ScriptName, "Error while downloading.") end
+        _ScriptUpdate(ToUpdate)
+    end
+end
 
 AddLoadCallback(
     function()
@@ -60,6 +79,7 @@ AddLoadCallback(
         local champion = Champions[myHero.charName]()
         if champion == nil then return end
         champion.Menu = scriptConfig(champion.ScriptName.." by "..champion.Author, champion.ScriptName.."18052016")
+                DelayAction(function() CheckUpdate() end, 5)
         DelayAction(function() _arrangePriorities() end, 12)
         if myHero.charName == "MasterYi" then
             champion.TS = _SimpleTargetSelector(TARGET_LESS_CAST_PRIORITY, 600, DAMAGE_PHYSICAL)
@@ -284,12 +304,182 @@ AddLoadCallback(
                 champion.Menu.Keys:permaShow("HarassToggle")
                 champion.Menu.Keys.HarassToggle = false
             champion.MenuLoaded = true
+            elseif myHero.charName == "DrMundo" then
+            champion.TS = _SimpleTargetSelector(TARGET_LESS_CAST_PRIORITY, 1050, DAMAGE_PHYSICAL)
+            champion.Q = _Spell({Slot = _Q, Range = 1050, Width = 60, Delay = 0.25, Speed = 2000, Aoe = false, Collision = true, Type = SPELL_TYPE.LINEAR}):AddDraw()
+            champion.W = _Spell({Slot = _W, Range = 320, Type = SPELL_TYPE.SELF}):AddDraw()
+            champion.E = _Spell({Slot = _E, Range = 200, Type = SPELL_TYPE.SELF}):AddDraw()
+            champion.R = _Spell({Slot = _R, Range = 0, Type = SPELL_TYPE.SELF})
+        
+            champion.TS:AddToMenu(champion.Menu)
+        
+            champion.Menu:addSubMenu(myHero.charName.." - General Settings", "General")
+                champion.Menu.General:addParam("Overkill", "Overkill % for Dmg Predict..", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Combo Settings", "Combo")
+                champion.Menu.Combo:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseR", "Use R", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("hp", "What % to ult", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
+                champion.Menu.Combo:addParam("Items", "Use Items in Combo", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Harass Settings", "Harass")
+                champion.Menu.Harass:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, false)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - LaneClear Settings", "LaneClear")
+                champion.Menu.LaneClear:addParam("UseQ", "Use Q",  SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - JungleClear Settings", "JungleClear")
+                champion.Menu.JungleClear:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                      
+            champion.Menu:addSubMenu(myHero.charName.." - KillSteal Settings", "KillSteal")
+                champion.Menu.KillSteal:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseIgnite", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Misc Settings", "Misc")
+                champion.Menu.Misc:addParam("SetSkin", "Select Skin", SCRIPT_PARAM_LIST, 10, {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
+                champion.Menu.Misc:addParam("AutoW", "Use Auto W", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Keys Settings", "Keys")
+                OrbwalkManager:LoadCommonKeys(champion.Menu.Keys)
+                champion.Menu.Keys:addParam("HarassToggle", "Harass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+                champion.Menu.Keys:permaShow("HarassToggle")
+                champion.Menu.Keys.HarassToggle = false
+            champion.MenuLoaded = true
+            elseif myHero.charName == "Malphite" then
+            champion.TS = _SimpleTargetSelector(TARGET_LESS_CAST_PRIORITY, 1000, DAMAGE_MAGIC)
+            champion.Q = _Spell({Slot = _Q, Range = 625, Type = SPELL_TYPE.TARGETTED}):AddDraw()
+            champion.W = _Spell({Slot = _W, Range = 0, Type = SPELL_TYPE.SELF}):AddDraw()
+            champion.E = _Spell({Slot = _E, Range = 400, Type = SPELL_TYPE.SELF}):AddDraw()
+            champion.R = _Spell({Slot = _R, Range = 1000, Width = 300, Delay = 0, Speed = 2000, Aoe = true, Collision = false, Type = SPELL_TYPE.CIRCULAR}):AddDraw()
+        
+            champion.TS:AddToMenu(champion.Menu)
+        
+            champion.Menu:addSubMenu(myHero.charName.." - General Settings", "General")
+                champion.Menu.General:addParam("Overkill", "Overkill % for Dmg Predict..", SCRIPT_PARAM_SLICE, 15, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Combo Settings", "Combo")
+                champion.Menu.Combo:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Combo:addParam("UseR", "Use R If Combo Kills", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Combo:addParam("useR2", "Use R If Enemies >=", SCRIPT_PARAM_SLICE, math.min(#GetEnemyHeroes(), 3), 0, 5, 0)
+                champion.Menu.Combo:addParam("Zhonyas","Use Zhonyas if % hp <= ", SCRIPT_PARAM_SLICE, 15, 0, 100)
+                champion.Menu.Combo:addParam("Items", "Use Items in Combo", SCRIPT_PARAM_ONOFF, true)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Harass Settings", "Harass")
+                champion.Menu.Harass:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Harass:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.Harass:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - LaneClear Settings", "LaneClear")
+                champion.Menu.LaneClear:addParam("UseQ", "Use Q",  SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.LaneClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+            
+            champion.Menu:addSubMenu(myHero.charName.." - JungleClear Settings", "JungleClear")
+                champion.Menu.JungleClear:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("UseW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                      
+            champion.Menu:addSubMenu(myHero.charName.." - KillSteal Settings", "KillSteal")
+                champion.Menu.KillSteal:addParam("UseQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseR", "Use R", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("UseIgnite", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+
+            champion.Menu:addSubMenu(myHero.charName.." - Misc Settings", "Misc")
+                champion.Menu.Misc:addParam("SetSkin", "Select Skin", SCRIPT_PARAM_LIST, 10, {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
+            
+            champion.Menu:addSubMenu(myHero.charName.." - Keys Settings", "Keys")
+                OrbwalkManager:LoadCommonKeys(champion.Menu.Keys)
+                champion.Menu.Keys:addParam("HarassToggle", "Harass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("T"))
+                champion.Menu.Keys:addParam("Run", "Run Nigga", SCRIPT_PARAM_ONKEYDOWN, false, string.byte("T"))
+                champion.Menu.Keys:permaShow("HarassToggle")
+                champion.Menu.Keys.HarassToggle = false
+                champion.Menu.Keys.Run = false
+            champion.MenuLoaded = true
+            elseif myHero.charName == "Kassadin" then
+            champion.TS = _SimpleTargetSelector(TARGET_LESS_CAST_PRIORITY, 850, DAMAGE_MAGIC)
+            champion.Q = _Spell({Slot = _Q, Range = 650, Type = SPELL_TYPE.TARGETTED}):AddDraw()
+            champion.W = _Spell({Slot = _W, Range = 175}):AddDraw()
+            champion.E = _Spell({Slot = _E, Range = 600, Width = 39*2, Delay = 0.25, Speed = math.huge, Aoe = true, Type = SPELL_TYPE.CONE}):AddDraw()
+            champion.R = _Spell({Slot = _R, Range = 493, Delay = 0.25, Width = 270, Speed = math.huge, Aoe = true, Type = SPELL_TYPE.CIRCULAR}):AddDraw()
+
+            champion.TS:AddToMenu(champion.Menu)
+
+            champion.Menu:addSubMenu(myHero.charName.." - General Settings", "General")
+                champion.Menu.General:addParam("Overkill", "Overkill % for Dmg Predict..", SCRIPT_PARAM_SLICE, 10, 0, 100, 0)
+
+            champion.Menu:addSubMenu(myHero.charName.." - Combo Settings", "Combo")
+                champion.Menu.Combo:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("useW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("useE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("useR", "Use R if Dmg Kills", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Combo:addParam("useR2", "Use R if 1 Target", SCRIPT_PARAM_ONOFF, true)
+
+
+            champion.Menu:addSubMenu(myHero.charName.." - Harass Settings", "Harass")
+                champion.Menu.Harass:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("useW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("useE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.Harass:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
+
+            champion.Menu:addSubMenu(myHero.charName.." - LaneClear Settings", "LaneClear")
+                champion.Menu.LaneClear:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("useW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("useE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.LaneClear:addParam("Mana", "Min. Mana Percent: ", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+
+            champion.Menu:addSubMenu(myHero.charName.." - JungleClear Settings", "JungleClear")
+                champion.Menu.JungleClear:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("useW", "Use W", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.JungleClear:addParam("useE", "Use E", SCRIPT_PARAM_ONOFF, true)
+
+            champion.Menu:addSubMenu(myHero.charName.." - LastHit Settings", "LastHit")
+                champion.Menu.LastHit:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.LastHit:addParam("Mana", "Min. Mana Percent:", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+
+            champion.Menu:addSubMenu(myHero.charName.." - KillSteal Settings", "KillSteal")
+                champion.Menu.KillSteal:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("useE", "Use E", SCRIPT_PARAM_ONOFF, true)
+                champion.Menu.KillSteal:addParam("useR", "Use R", SCRIPT_PARAM_ONOFF, false)
+                champion.Menu.KillSteal:addParam("useIgnite", "Use Ignite", SCRIPT_PARAM_ONOFF, true)
+
+            champion.Menu:addSubMenu(myHero.charName.." - Drawing Settings", "Draw")
+                champion.Menu.Draw:addParam("Damage", "Damage Calculation Bar", SCRIPT_PARAM_ONOFF, true)
+
+            champion.Menu:addSubMenu(myHero.charName.." - Auto Settings", "Auto")          
+                champion.Menu.Auto:addSubMenu("Use R To Evade", "UseR")
+                _Evader(champion.Menu.Auto.UseR):CheckCC():AddCallback(function(target) champion:EvadeR(target)end)
+
+            champion.Menu:addSubMenu(myHero.charName.." - Misc Settings", "Misc")
+                champion.Menu.Misc:addParam("SetSkin", "Select Skin", SCRIPT_PARAM_LIST, 10, {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
+
+            champion.Menu:addSubMenu(myHero.charName.." - Keys Settings", "Keys")
+                OrbwalkManager:LoadCommonKeys(champion.Menu.Keys)
+                champion.Menu.Keys:addParam("HarassToggle", "Harass (Toggle)", SCRIPT_PARAM_ONKEYTOGGLE, false, string.byte("L"))
+                champion.Menu.Keys:permaShow("HarassToggle")
+                champion.Menu.Keys.HarassToggle = false
+            champion.MenuLoaded = true
         end
         local ChampionCallbacks = {
             ["MasterYi"] = { ["OnTick"] = true, },
             ["Kennen"]   = { ["OnTick"] = true, ["OnProcessSpell"] = true, ["OnApplyBuff"] = true, ["OnRemoveBuff"] = true, },
             ["Graves"]   = { ["OnTick"] = true, },
             ["Brand"]    = { ["OnTick"] = true, },
+            ["DrMundo"]  = { ["OnTick"] = true, ["OnApplyBuff"] = true, ["OnRemoveBuff"] = true, },
+            ["Malphite"] = { ["OnTick"] = true, },
+            ["Kassadin"] = { ["OnTick"] = true, },
         }
         if ChampionCallbacks[myHero.charName]["OnTick"] then AddTickCallback(function() champion:OnTick() end) end
         if ChampionCallbacks[myHero.charName]["OnProcessSpell"] then
@@ -1014,7 +1204,427 @@ function  __Brand:Clear()
     end
 end
 
+class "__DrMundo"
+function __DrMundo:__init()
+    self.ScriptName = "Dr Edmundo"
+    self.Author = "Artrilo"
+    self.MenuLoaded = false
+    self.Menu = nil
+    self.TS = nil
+    self.WActive = false
+end
 
+function __DrMundo:OnTick()
+    if self.Menu == nil or self.TS == nil or not self.MenuLoaded then return end
+    self.TS:update()
+    self:KillSteal()
+    SetSkin(myHero, self.Menu.Misc.SetSkin)
+    if OrbwalkManager:IsCombo() then
+        self:Combo()
+    elseif OrbwalkManager:IsHarass() then
+        self:Harass()
+    elseif OrbwalkManager:IsClear() then
+        self:Clear()
+    end
+    if myHero:GetSpellData(_W).toggleState == 2 then
+        WActive = true
+    else
+        WActive = false
+    end
+    if self.Menu.Keys.HarassToggle then self:Harass() end
+    if self.Menu.Misc.AutoW then
+        self:AutoDisableW()
+    end
+end
+
+function __DrMundo:OnApplyBuff(source, unit, buff)
+    if unit and source and buff and buff.name and buff.name:lower():find("drmundo") and unit.type == myHero.type then
+        if buff.name == "BurningAgony" then
+            self.WActive = true
+        end
+    end
+end
+
+function __DrMundo:OnRemoveBuff(unit, buff)
+    if unit and buff and buff.name and buff.name:lower():find("drmundo") and unit.type == myHero.type then
+        if buff.name == "BurningAgony" then
+            self.WActive = false
+        end
+    end
+end
+
+function __DrMundo:KillSteal()
+    for idx, enemy in ipairs(GetEnemyHeroes()) do
+        if IsValidTarget(enemy, 1800) and enemy.health > 0 and PercentageHealth(enemy) <= 30 then
+            if self.Menu.KillSteal.UseQ and self.Q:Damage(enemy) >= enemy.health then self.Q:Cast(enemy) end
+            if self.Menu.KillSteal.UseIgnite and Ignite:IsReady() and Ignite:Damage(enemy) >= enemy.health then Ignite:Cast(enemy) end
+        end
+    end
+end
+
+function __DrMundo:Combo()
+    local target = self.TS.target
+    if OrbwalkManager.GotReset and OrbwalkManager:InRange(target) then return end
+    if IsValidTarget(target) then
+        if self.Menu.Combo.Items then UseItems(target) end
+        if self.Menu.Combo.UseQ then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Combo.UseW and self:GetEnemyW() ~= 0 then
+            self:EnableW()
+        else
+            self:DisableW()
+        end
+        if self.Menu.Combo.UseE and CountEnemyHeroInRange(self.E.Range) >= 1 then
+            self.E:Cast()
+        end
+        if self.Menu.Combo.UseR and myHero.health/myHero.maxHealth * 100 <= self.Menu.Combo.hp and CountEnemyHeroInRange(600) >= 1 then
+            CastSpell(_R)
+        end     
+    end
+end
+
+function __DrMundo:EnableW()
+  if not WActive and self.W:IsReady() then
+    self.W:Cast()
+  end
+end
+
+function __DrMundo:DisableW()
+  if WActive and self.W:IsReady() then
+    self.W:Cast()
+  end
+end
+
+function __DrMundo:AutoDisableW()
+    if WActive and not self:GetAllEnemyW() and self.W:IsReady() and self.Menu.Misc.AutoW then
+        self.W:Cast()
+    end
+end
+
+function __DrMundo:GetAllEnemyW()
+  if CountEnemyHeroInRange(500) > 0 then
+    return true
+  else
+    return false
+  end
+end
+
+function  __DrMundo:Harass()
+    local target = self.TS.target
+    if ValidTarget(target) then
+        if self.Menu.Harass.UseQ then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Harass.UseW then
+            self.W:Cast(target)
+        end
+        if self.Menu.Harass.UseE then
+            self.E:Cast(target)
+        end
+    end
+end
+
+function  __DrMundo:Clear()
+    if self.Menu.LaneClear.UseQ then
+        self.Q:LaneClear()
+    end
+    if self.Menu.LaneClear.UseW then
+        self.W:LaneClear()
+    end
+     if self.Menu.LaneClear.UseE then
+        self.E:LaneClear()
+    end
+    if self.Menu.JungleClear.UseQ then
+        self.Q:JungleClear()
+    end
+    if self.Menu.JungleClear.UseW then
+        self.W:JungleClear()
+    end
+    if self.Menu.JungleClear.UseE then
+        self.E:JungleClear()
+    end
+end
+
+function __DrMundo:GetEnemyW()
+  return CountEnemyHeroInRange(500)
+end
+
+function __DrMundo:GetOverkill()
+    return (100 + self.Menu.General.Overkill)/100
+end
+
+class "__Malphite"
+function __Malphite:__init()
+    self.ScriptName = "The Rolling Stone"
+    self.Author = "Artrilo"
+    self.MenuLoaded = false
+    self.Menu = nil
+    self.TS = nil
+end
+
+function __Malphite:OnTick()
+    if self.Menu == nil or self.TS == nil or not self.MenuLoaded then return end
+    self.TS:update()
+    self:KillSteal()
+    SetSkin(myHero, self.Menu.Misc.SetSkin)
+    if OrbwalkManager:IsCombo() then
+        self:Combo()
+    elseif OrbwalkManager:IsHarass() then
+        self:Harass()
+    elseif OrbwalkManager:IsClear() then
+        self:Clear()
+    end
+    if self.Menu.Keys.HarassToggle then self:Harass() end
+    if self.Menu.Keys.Run then self:Run() end
+end
+
+function __Malphite:KillSteal()
+    for idx, enemy in ipairs(GetEnemyHeroes()) do
+        if IsValidTarget(enemy, 1800) and enemy.health > 0 and PercentageHealth(enemy) <= 30 then
+            if self.Menu.KillSteal.UseQ and self.Q:Damage(enemy) >= enemy.health then self.Q:Cast(enemy) end
+            if self.Menu.KillSteal.UseE and self.E:Damage(enemy) >= enemy.health then self.E:Cast(enemy) end
+            if self.Menu.KillSteal.UseR and self.R:Damage(enemy) >= enemy.health then self.R:Cast(enemy) end
+            if self.Menu.KillSteal.UseIgnite and Ignite:IsReady() and Ignite:Damage(enemy) >= enemy.health then Ignite:Cast(enemy) end
+        end
+    end
+end
+
+function __Malphite:Combo()
+    local target = self.TS.target
+    if IsValidTarget(target) then
+        if self.Menu.Combo.Zhonyas > 0 and PercentageHealth() <= self.Menu.Combo.Zhonyas and DefensiveItems.Zhonyas:IsReady() then
+            DefensiveItems.Zhonyas:Cast()
+        end
+        if self.Menu.Combo.Items then UseItems(target) end
+        if self.Menu.Combo.UseQ then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Combo.UseW and CountEnemyHeroInRange(200) >= 1 then
+            self.W:Cast()
+        end
+        if self.Menu.Combo.UseE then
+            self.E:Cast(target)
+        end
+        if self.Menu.Combo.UseR and self.R:IsReady() and self.Q:IsReady() and self.E:IsReady() then
+            if self.Q:Damage(target) + self.E:Damage(target) + self.R:Damage(target) > target.health then
+                self.R:Cast(target)
+            end
+        end
+        if self.Menu.Combo.useR2 > 0 then
+            if self.R:IsReady() then
+                for i, enemy in ipairs(GetEnemyHeroes()) do
+                    local CastPosition, WillHit, NumberOfHits = self.R:GetPrediction(enemy, {TypeOfPrediction = "VPrediction"})
+                    if NumberOfHits and type(NumberOfHits) == "number" and NumberOfHits >= self.Menu.Combo.useR2 and WillHit then
+                        CastSpell(self.R.Slot, CastPosition.x, CastPosition.z)
+                    end
+                end
+            end
+        end    
+    end
+end
+
+function  __Malphite:Harass()
+    if PercentageMana() >= self.Menu.Harass.Mana then
+        local target = self.TS.target
+        if ValidTarget(target) then
+            if self.Menu.Harass.UseQ then
+                self.Q:Cast(target)
+            end
+            if self.Menu.Harass.UseW and CountEnemyHeroInRange(200) >= 1 then
+                self.W:Cast(target)
+            end
+            if self.Menu.Harass.UseE then
+                self.E:Cast(target)
+            end
+        end
+    end
+end
+
+function  __Malphite:Clear()
+    if PercentageMana() >= self.Menu.LaneClear.Mana then
+        if self.Menu.LaneClear.UseQ then
+            self.Q:LaneClear()
+        end
+         if self.Menu.LaneClear.UseW then
+            self.W:LaneClear()
+        end
+        if self.Menu.LaneClear.UseE then
+            self.E:LaneClear()
+        end
+    end
+    if self.Menu.JungleClear.UseQ then
+        self.Q:JungleClear()
+    end
+    if self.Menu.JungleClear.UseW then
+        self.W:JungleClear()
+    end
+    if self.Menu.JungleClear.UseE then
+        self.E:JungleClear()
+    end
+end
+
+function __Malphite:Run()
+    local target = self.TS.target
+    myHero:MoveTo(mousePos.x, mousePos.z)
+    self.Q:Cast(target)
+end
+
+class "__Kassadin"
+function __Kassadin:__init()
+    self.ScriptName = "Monsterdin"
+    self.Author = "Artrilo"
+    self.MenuLoaded = false
+    self.Menu = nil
+    self.TS = nil
+end
+function __Kassadin:OnTick()
+    if myHero.dead or self.Menu == nil or not self.MenuLoaded then return end
+    self.TS:update()
+    self:KillSteal()
+    SetSkin(myHero, self.Menu.Misc.SetSkin)
+    if OrbwalkManager:IsCombo() then
+        self:Combo()
+    elseif OrbwalkManager:IsHarass() then
+        self:Harass()
+    elseif OrbwalkManager:IsClear() then
+        self:Clear()
+    elseif OrbwalkManager:IsLastHit() then
+        self:LastHit()
+    end
+    if self.Menu.Keys.HarassToggle then self:Harass() end 
+end
+
+function __Kassadin:KillSteal()
+    for idx, enemy in ipairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy, self.TS.range) and enemy.health > 0 and PercentageHealth(enemy) <= 35 then
+            local q, w, e, r, dmg = GetBestCombo(enemy, self)
+            if dmg >= enemy.health then
+              if self.Menu.KillSteal.useQ and self.Q:Damage(enemy) >= enemy.health and not enemy.dead then self.Q:Cast(enemy) end
+              if self.Menu.KillSteal.useE and self.E:Damage(enemy) >= enemy.health and not enemy.dead then self.E:Cast(enemy) end
+              if self.Menu.KillSteal.useR and self.R:Damage(enemy) >= enemy.health and not enemy.dead then self.R:Cast(enemy) end
+            end
+            if self.Menu.KillSteal.useIgnite and Ignite:IsReady() and Ignite:Damage(enemy) >= enemy.health and not enemy.dead then Ignite:Cast(enemy) end
+        end
+    end
+end
+
+function __Kassadin:Combo()
+    local target = self.TS.target
+    local q, w, e, r, dmg = GetBestCombo(target, self)
+    if ValidTarget(target) then
+        if OrbwalkManager.GotReset and OrbwalkManager:InRange(target) then return end
+        if self.Menu.Combo.useQ then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Combo.useW then
+            self.W:Cast(target)
+        end
+        if self.Menu.Combo.useE then
+            self.E:Cast(target)
+        end
+        if self.Menu.Combo.useR2 and CountEnemyHeroInRange(self.R.Range) <= 1 then
+            self.R:Cast(target)
+        end
+        if self.Menu.Combo.useR and self.Q:IsReady() then
+            if self.Q:Damage(target) + self.R:Damage(target) + self.E:Damage(target) > target.health then
+                self.R:Cast(target)
+            end
+        end
+    end
+end
+
+function __Kassadin:Harass()
+    local target = self.TS.target
+    if ValidTarget(target) then
+        if self.Menu.Harass.useQ then
+            self.Q:Cast(target)
+        end
+        if self.Menu.Harass.useE then
+            self.E:Cast(target)
+        end
+        if self.Menu.Harass.useW then
+            self.W:Cast(target)
+        end
+    end
+end
+
+function __Kassadin:Clear()
+    if PercentageMana() >= self.Menu.LaneClear.Mana then
+        if self.Menu.LaneClear.useQ then
+            self.Q:LaneClear()
+        end
+        if self.Menu.LaneClear.useW then
+            self.W:LaneClear()
+        end
+        if self.Menu.LaneClear.useE then
+            self.E:LaneClear()
+        end
+    end
+
+    if self.Menu.JungleClear.useE then
+        self.E:JungleClear()
+    end
+    if self.Menu.JungleClear.useQ then
+        self.Q:JungleClear()
+    end
+    if self.Menu.JungleClear.useW then
+        self.W:JungleClear()
+    end
+end
+
+function __Kassadin:LastHit()
+    if PercentageMana() >= self.Menu.LastHit.Mana then
+        if self.Menu.LastHit.useQ then
+            self.Q:LastHit()
+        end
+    end
+end
+
+function __Kassadin:EvadeR(target)
+    if self.R:IsReady() and IsValidTarget(target) then
+        local Position = Vector(myHero) + Vector(Vector(target) - Vector(myHero)):normalized():perpendicular() * self.R.Range
+        local Position2 = Vector(myHero) + Vector(Vector(target) - Vector(myHero)):normalized():perpendicular2() * self.R.Range
+        if not Collides(Position) then
+            self.R:CastToVector(Position)
+        elseif not Collides(Position2) then
+            self.R:CastToVector(Position2)
+        else
+            self.R:CastToVector(Position)
+        end
+    end
+end
+
+function __Kassadin:GetComboDamage(target, q, w, e, r)
+    local comboDamage = 0
+    local currentManaWasted = 0
+    if IsValidTarget(target) then
+        if q then
+            comboDamage = comboDamage + self.Q:Damage(target)
+            currentManaWasted = currentManaWasted + self.Q:Mana()
+        end
+        if w then
+            comboDamage = comboDamage + self.W:Damage(target)
+            currentManaWasted = currentManaWasted + self.W:Mana()
+        end
+        if e then
+            comboDamage = comboDamage + self.E:Damage(target)
+            currentManaWasted = currentManaWasted + self.E:Mana()
+        end
+        if r then
+            comboDamage = comboDamage + self.R:Damage(target)
+            currentManaWasted = currentManaWasted + self.R:Mana()
+        end
+        if Ignite:IsReady() then comboDamage = comboDamage + Ignite:Damage(target) end
+        comboDamage = comboDamage + getDmg("AD", target, myHero) * 2
+    end
+    comboDamage = comboDamage * self:GetOverkill()
+    return comboDamage, currentManaWasted
+end
+
+function __Kassadin:GetOverkill()
+    return (100 + self.Menu.General.Overkill)/100
+end
 
 function RequireSimpleLib()
     if FileExist(LIB_PATH.."SimpleLib.lua") and not FileExist(SCRIPT_PATH.."SimpleLib.lua") then
@@ -1126,146 +1736,121 @@ function RequireSimpleLib()
     end
 end
 
-DelayAction(
-        function()
-            local function Base64Encode2(data)
-                local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-                return ((data:gsub('.', function(x)
-                    local r,b='',x:byte()
-                    for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
-                    return r;
-                end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
-                    if (#x < 6) then return '' end
-                    local c=0
-                    for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
-                    return b:sub(c+1,c+1)
-                end)..({ '', '==', '=' })[#data%3+1])
-            end
-            local LocalVersion = Version
-            local UseHttps = true
-            local Size = nil
-            local VersionPath = "raw.githubusercontent.com/Artrilo/Bot-Of-Legends/master/version/MonsterBundle.version"
-            local ScriptPath = "raw.githubusercontent.com/Artrilo/Bot-Of-Legends/master/version/MonsterBundle.lua"
-            local SavePath = SCRIPT_PATH.._ENV.FILE_NAME
-            local VersionPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..Base64Encode2(VersionPath)..'&rand='..math.random(99999999)
-            local ScriptPath = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..Base64Encode2(ScriptPath)..'&rand='..math.random(99999999)
-            local LuaSocket, Socket, Url, Started, File, GotScriptVersion, NewFile, GotScriptUpdate = nil, nil, nil, false, "", false, '', false
-            local Receive, Status, Snipped, RecvStarted, RecvStarted, OnlineVersion = nil, nil, nil, false, 0
-            local Url = '/BoL/TCPUpdater/GetScript'..(UseHttps and '5' or '6')..'.php?script='..Base64Encode2(VersionPath)..'&rand='..math.random(99999999)
-            local function CreateSocket2(url)
-                if not LuaSocket then
-                    LuaSocket = require("socket")
-                else
-                    Socket:close()
-                    Socket = nil
-                    Size = nil
-                    RecvStarted = false
-                end
-                Socket = LuaSocket.tcp()
-                if not Socket then
-                    print('Socket Error')
-                else
-                    Socket:settimeout(0, 'b')
-                    Socket:settimeout(99999999, 't')
-                    Socket:connect(tostring('sx-bol.eu'), 80)
-                    Url = url
-                    Started = false
-                    File = ""
-                end
-            end
-            CreateSocket2(VersionPath)
-            AddTickCallback(
-                function()
-                    if GotScriptVersion then return end
-                
-                    Receive, Status, Snipped = Socket:receive(1024)
-                    if Status == 'timeout' and not Started then
-                        Started = true
-                        Socket:send("GET "..Url.." HTTP/1.1\r\nHost: sx-bol.eu\r\n\r\n")
-                    end
-                    if (Receive or (#Snipped > 0)) and not RecvStarted then
-                        RecvStarted = true
-                    end
-                
-                    File = File .. (Receive or Snipped)
-                    if File:find('</s'..'ize>') then
-                        if not Size then
-                            Size = tonumber(File:sub(File:find('<si'..'ze>') + 6, File:find('</si'..'ze>')-1))
-                        end
-                    end
-                    if File:find('</scr'..'ipt>') then
-                        local a,b = File:find('\r\n\r\n')
-                       File = File:sub(a,-1)
-                        NewFile = ''
-                        for line,content in ipairs(File:split('\n')) do
-                            if content:len() > 5 then
-                                NewFile = NewFile .. content
-                            end
-                        end
-                        local HeaderEnd, ContentStart = File:find('<scr'..'ipt>')
-                        local ContentEnd, _ = File:find('</sc'..'ript>')
-                        if not ContentStart or not ContentEnd then
-                        else
-                            OnlineVersion = (Base64Decode(File:sub(ContentStart + 1,ContentEnd-1)))
-                            if OnlineVersion ~= nil then
-                                OnlineVersion = tonumber(OnlineVersion)
-                                if OnlineVersion ~= nil and LocalVersion ~= nil and type(OnlineVersion) == "number" and type(LocalVersion) == "number" and OnlineVersion > LocalVersion then
-                                    CreateSocket2(ScriptPath)
-                                    AddTickCallback(function()
-                                        if GotScriptUpdate then return end
-                                        Receive, Status, Snipped = Socket:receive(1024)
-                                        if Status == 'timeout' and not Started then
-                                            Started = true
-                                            Socket:send("GET "..Url.." HTTP/1.1\r\nHost: sx-bol.eu\r\n\r\n")
-                                        end
-                                        if (Receive or (#Snipped > 0)) and not RecvStarted then
-                                            RecvStarted = true
-                                        end
-                                          
-                                        File = File .. (Receive or Snipped)
-                                        if File:find('</si'..'ze>') then
-                                            if not Size then
-                                                Size = tonumber(File:sub(File:find('<si'..'ze>') + 6, File:find('</si'..'ze>') - 1))
-                                            end
-                                        end
-                                        if File:find('</scr'..'ipt>') then
-                                            local a,b = File:find('\r\n\r\n')
-                                            File = File:sub(a,-1)
-                                            NewFile = ''
-                                            for line,content in ipairs(File:split('\n')) do
-                                                if content:len() > 5 then
-                                                    NewFile = NewFile .. content
-                                                end
-                                            end
-                                            local HeaderEnd, ContentStart = NewFile:find('<sc'..'ript>')
-                                            local ContentEnd, _ = NewFile:find('</scr'..'ipt>')
-                                            if not ContentStart or not ContentEnd then
-                                            else
-                                                local newf = NewFile:sub(ContentStart + 1,ContentEnd - 1)
-                                                local newf = newf:gsub('\r','')
-                                                if newf:len() ~= Size then
-                                                    return
-                                                end
-                                                local newf = Base64Decode(newf)
-                                                if type(load(newf)) ~= 'function' then
+class "_Downloader"
+function _Downloader:__init(t)
+    local name = t.Name
+    local url = t.Url
+    local extension = t.Extension ~= nil and t.Extension or "lua"
+    local usehttps = t.UseHttps ~= nil and t.UseHttps or true
+    self.SavePath = LIB_PATH..name.."."..extension
+    self.ScriptPath = '/BoL/TCPUpdater/GetScript'..(usehttps and '5' or '6')..'.php?script='..self:Base64Encode(url)..'&rand='..math.random(99999999)
+    self:CreateSocket(self.ScriptPath)
+    self.DownloadStatus = 'Connect to Server'
+    self.GotScript = false
+end
 
-                                                else
-                                                    local f = io.open(SavePath,"w+b")
-                                                    f:write(newf)
-                                                    f:close()
-                                                end
-                                            end
-                                            GotScriptUpdate = true
-                                        end
-                                    end)
-                                else
+function _Downloader:CreateSocket(url)
+    if not self.LuaSocket then
+        self.LuaSocket = require("socket")
+    else
+        self.Socket:close()
+        self.Socket = nil
+        self.Size = nil
+        self.RecvStarted = false
+    end
+    self.Socket = self.LuaSocket.tcp()
+    if not self.Socket then
+        print('Socket Error')
+    else
+        self.Socket:settimeout(0, 'b')
+        self.Socket:settimeout(99999999, 't')
+        self.Socket:connect('sx-bol.eu', 80)
+        self.Url = url
+        self.Started = false
+        self.LastPrint = ""
+        self.File = ""
+    end
+end
 
-                                end
-                            end
-                        end
-                        GotScriptVersion = true
-                    end
-                end)
-        end, 
-    30
-)
+function _Downloader:Download()
+    if self.GotScript then return end
+    self.Receive, self.Status, self.Snipped = self.Socket:receive(1024)
+    if self.Status == 'timeout' and not self.Started then
+        self.Started = true
+        self.Socket:send("GET "..self.Url.." HTTP/1.1\r\nHost: sx-bol.eu\r\n\r\n")
+    end
+    if (self.Receive or (#self.Snipped > 0)) and not self.RecvStarted then
+        self.RecvStarted = true
+        self.DownloadStatus = 'Downloading Script (0%)'
+    end
+
+    self.File = self.File .. (self.Receive or self.Snipped)
+    if self.File:find('</si'..'ze>') then
+        if not self.Size then
+            self.Size = tonumber(self.File:sub(self.File:find('<si'..'ze>')+6,self.File:find('</si'..'ze>')-1))
+        end
+        if self.File:find('<scr'..'ipt>') then
+            local _,ScriptFind = self.File:find('<scr'..'ipt>')
+            local ScriptEnd = self.File:find('</scr'..'ipt>')
+            if ScriptEnd then ScriptEnd = ScriptEnd - 1 end
+            local DownloadedSize = self.File:sub(ScriptFind+1,ScriptEnd or -1):len()
+            self.DownloadStatus = 'Downloading Script ('..math.round(100/self.Size*DownloadedSize,2)..'%)'
+        end
+    end
+    if self.File:find('</scr'..'ipt>') then
+        self.DownloadStatus = 'Downloading Script (100%)'
+        local a,b = self.File:find('\r\n\r\n')
+        self.File = self.File:sub(a,-1)
+        self.NewFile = ''
+        for line,content in ipairs(self.File:split('\n')) do
+            if content:len() > 5 then
+                self.NewFile = self.NewFile .. content
+            end
+        end
+        local HeaderEnd, ContentStart = self.NewFile:find('<sc'..'ript>')
+        local ContentEnd, _ = self.NewFile:find('</scr'..'ipt>')
+        if not ContentStart or not ContentEnd then
+            if self.CallbackError and type(self.CallbackError) == 'function' then
+                self.CallbackError()
+            end
+        else
+            local newf = self.NewFile:sub(ContentStart+1,ContentEnd-1)
+            local newf = newf:gsub('\r','')
+            if newf:len() ~= self.Size then
+                if self.CallbackError and type(self.CallbackError) == 'function' then
+                    self.CallbackError()
+                end
+                return
+            end
+            local newf = Base64Decode(newf)
+            if type(load(newf)) ~= 'function' then
+                if self.CallbackError and type(self.CallbackError) == 'function' then
+                    self.CallbackError()
+                end
+            else
+                local f = io.open(self.SavePath,"w+b")
+                f:write(newf)
+                f:close()
+                if self.CallbackUpdate and type(self.CallbackUpdate) == 'function' then
+                    self.CallbackUpdate(self.OnlineVersion,self.LocalVersion)
+                end
+            end
+        end
+        self.GotScript = true
+    end
+end
+
+function _Downloader:Base64Encode(data)
+    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    return ((data:gsub('.', function(x)
+        local r,b='',x:byte()
+        for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
+        return r;
+    end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
+        if (#x < 6) then return '' end
+        local c=0
+        for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
+        return b:sub(c+1,c+1)
+    end)..({ '', '==', '=' })[#data%3+1])
+        end
+        
